@@ -228,6 +228,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/btn_shaped"
         android:text="Next"
+        android:onClick="onClickNext"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"

@@ -20,7 +20,9 @@
         <activity android:name=".ProviderActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".RegisterProvider" />
-        <activity android:name=".NextActivity"></activity>
+        <activity android:name=".NextActivity" />
+        <activity android:name=".BankInfoActivity" />
+        <activity android:name=".QualificationInfoActivity"></activity>
     </application>
 
 </manifest>
