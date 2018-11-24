@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/user_provider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -52,7 +52,7 @@
             android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:background="@drawable/btn_shaped"
-            android:text="Sign in"
+            android:text="User"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -64,7 +64,8 @@
             android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:background="@drawable/btn_shaped"
-            android:text="Register"
+            android:text="Provider"
+            android:onClick="onClickProvider"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>

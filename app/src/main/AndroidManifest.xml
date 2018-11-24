@@ -18,7 +18,9 @@
         </activity>
         <activity android:name=".SigninActivity" />
         <activity android:name=".ProviderActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterProvider" />
+        <activity android:name=".NextActivity"></activity>
     </application>
 
 </manifest>

@@ -5,16 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterProvider extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register_provider);
     }
 
-    public void onClickProvider(View view) {
-        Intent providerIntent = new Intent(this, RegisterProvider.class);
-        startActivity(providerIntent);
+    public void onClickNext(View view) {
+        Intent nextIntent = new Intent(this, NextActivity.class);
+        startActivity(nextIntent);
     }
 }
