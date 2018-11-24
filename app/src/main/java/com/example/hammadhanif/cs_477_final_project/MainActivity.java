@@ -17,4 +17,9 @@ public class MainActivity extends AppCompatActivity {
         Intent signIn_Intent = new Intent(MainActivity.this, SigninActivity.class);
         startActivity(signIn_Intent);
     }
+
+    public void onClickRegister(View view) {
+        Intent registerIntent = new Intent(this, RegisterActivity.class);
+        startActivity(registerIntent);
+    }
 }

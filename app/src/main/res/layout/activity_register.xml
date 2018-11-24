@@ -4,29 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:context=".MainActivity">
+    tools:context=".RegisterActivity"
+    android:background="@drawable/background">
 
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="344dp"
-        android:layout_height="302dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="416dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:text="Do you wish to register as a\nUser or Service Provider?"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@mipmap/ic_launcher_foreground"
-        tools:ignore="VectorDrawableCompat" />
+        app:layout_constraintVertical_bias="0.833" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -36,7 +37,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="32dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,27 +48,24 @@
             android:id="@+id/sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_shaped"
             android:text="Sign in"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:onClick="onClickSignIn"
-            android:background="@drawable/btn_shaped"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/provider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_shaped"
             android:text="Register"
-            android:onClick="onClickRegister"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:background="@drawable/btn_shaped"/>
+            android:textStyle="bold" />
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>
