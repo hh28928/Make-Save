@@ -22,7 +22,8 @@
         <activity android:name=".RegisterProvider" />
         <activity android:name=".NextActivity" />
         <activity android:name=".BankInfoActivity" />
-        <activity android:name=".QualificationInfoActivity"></activity>
+        <activity android:name=".QualificationInfoActivity" />
+        <activity android:name=".PhotoActivity"></activity>
     </application>
 
 </manifest>
