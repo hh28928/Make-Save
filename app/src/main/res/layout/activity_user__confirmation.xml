@@ -53,6 +53,7 @@
         android:background="@drawable/btn_shaped"
         android:text="Continue"
         android:textColor="@color/white"
+        android:onClick="OnclickContinue"
 
         />
 

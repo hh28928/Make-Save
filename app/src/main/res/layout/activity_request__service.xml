@@ -7,4 +7,10 @@
     android:background="@drawable/background"
     tools:context=".Request_Service">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameofservice"
+        android:background=""/>
+
 </android.widget.RelativeLayout>
