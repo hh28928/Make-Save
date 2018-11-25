@@ -23,7 +23,7 @@
         <activity android:name=".NextActivity" />
         <activity android:name=".BankInfoActivity" />
         <activity android:name=".QualificationInfoActivity" />
-        <activity android:name=".PhotoActivity"></activity>
+        <activity android:name=".User_Confirmation" />
     </application>
 
 </manifest>

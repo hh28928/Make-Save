@@ -19,4 +19,10 @@ public class SigninActivity extends AppCompatActivity {
         Intent providerIntent = new Intent(this, ProviderActivity.class);
         startActivity(providerIntent);
     }
+
+    public void OnclickUser(View view) {
+        Intent UserConfirmation = new Intent(this, User_Confirmation.class);
+        startActivity(UserConfirmation);
+
+    }
 }
