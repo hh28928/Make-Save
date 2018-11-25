@@ -11,6 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/nameofservice"
-        android:background=""/>
+        android:background="@null"/>
 
 </android.widget.RelativeLayout>
