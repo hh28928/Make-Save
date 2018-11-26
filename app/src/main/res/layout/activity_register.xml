@@ -54,7 +54,8 @@
             android:background="@drawable/btn_shaped"
             android:text="User"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="onClickuser"/>
 
         <Button
             android:id="@+id/provider"

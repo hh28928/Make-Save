@@ -17,4 +17,5 @@ public class RegisterProvider extends AppCompatActivity {
         Intent nextIntent = new Intent(this, NextActivity.class);
         startActivity(nextIntent);
     }
+
 }

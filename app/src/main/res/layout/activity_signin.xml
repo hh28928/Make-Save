@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/btn_shaped"
-            android:text="  If he is provider  "
+            android:text="Provider"
             android:onClick="onClickProvider"
             android:textColor="@color/white" />
 

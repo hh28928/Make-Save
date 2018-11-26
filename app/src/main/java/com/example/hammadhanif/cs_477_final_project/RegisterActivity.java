@@ -17,4 +17,10 @@ public class RegisterActivity extends AppCompatActivity {
         Intent providerIntent = new Intent(this, RegisterProvider.class);
         startActivity(providerIntent);
     }
+
+    public void onClickuser(View view) {
+        Intent providerIntent = new Intent(this, User_Registration.class);
+        startActivity(providerIntent);
+
+    }
 }

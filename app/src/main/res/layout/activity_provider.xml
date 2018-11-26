@@ -53,6 +53,7 @@
         android:layout_marginBottom="168dp"
         android:background="@drawable/btn_shaped"
         android:text="Continue"
+        android:onClick="onClickContinueMap"
         android:textColor="@color/white"
 
         />

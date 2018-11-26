@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CS-477-Final-Project</string>
+    <string name="title_activity_current_location_map">Map</string>
 </resources>
