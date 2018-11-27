@@ -32,6 +32,7 @@
         android:textColor="@color/white" />
 
     <EditText
+        android:id="@+id/usersPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/usersEmail"
@@ -42,6 +43,7 @@
         android:textColor="@color/white" />
 
     <Button
+        android:id="@+id/UserSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
