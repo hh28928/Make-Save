@@ -48,7 +48,8 @@
         <activity android:name=".User_Registration" />
         <activity android:name=".EnterUserDetails" />
         <activity android:name=".CurrentLocationMap" />
-        <activity android:name=".SignInUsingEmail"></activity>
+        <activity android:name=".SignInUsingEmail"/>
+        <activity android:name=".PhotoActivity"/>
     </application>
 
 </manifest>
