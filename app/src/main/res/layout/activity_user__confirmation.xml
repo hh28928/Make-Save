@@ -58,6 +58,7 @@
         />
 
     <Button
+        android:onClick="SignInUsingEmail"
         android:id="@+id/signin_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

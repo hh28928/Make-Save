@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">CS-477-Final-Project</string>
     <string name="title_activity_current_location_map">Map</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

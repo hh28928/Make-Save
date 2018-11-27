@@ -19,4 +19,10 @@ public class User_Confirmation extends AppCompatActivity {
         startActivity(UserConfirmation);
 
     }
+    //in case user wants to sign in through his email
+    public void SignInUsingEmail(View view) {
+        Intent signInThroughEmail = new Intent(this, SignInUsingEmail.class);
+        startActivity(signInThroughEmail);
+
+    }
 }
