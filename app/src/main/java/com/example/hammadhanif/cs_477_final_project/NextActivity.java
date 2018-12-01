@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Locale;
 
 public class NextActivity extends AppCompatActivity {
 
@@ -38,10 +39,12 @@ public class NextActivity extends AppCompatActivity {
     EditText lastName;
     EditText email;
     EditText location;
+    EditText phoneNumber;
 
     EditText dateOfBirth;
 
     EditText password;
+
 
     private ProgressDialog progressDialog;
 
@@ -56,6 +59,8 @@ public class NextActivity extends AppCompatActivity {
     String DOB;
     String userEmail;
     String userLocation;
+    String userPhone;
+    Calendar myCalendar;
 
     private FirebaseAuth.AuthStateListener firebaseAuthListner;
 
@@ -63,6 +68,10 @@ public class NextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
+
+
+        //calander
+
 
         //find the ids that will be saved in the database for now
 
@@ -76,6 +85,8 @@ public class NextActivity extends AppCompatActivity {
         lastName = findViewById(R.id.last_name);
         dateOfBirth = findViewById(R.id.date_of_birth);
         location = findViewById(R.id.address);
+
+        phoneNumber = findViewById(R.id.phone_number);
 
         /*
         since this is an internet operation it will take time
@@ -141,9 +152,10 @@ public class NextActivity extends AppCompatActivity {
                                     if (email.getText().toString().equals("") ||
                                             firstName.getText().toString().equals("") ||
                                             lastName.getText().toString().equals("") ||
-                                            dateOfBirth.getText().toString().equals("") ||
+                                            //dateOfBirth.getText().toString().equals("") ||
                                             password.getText().toString().equals("") ||
-                                            location.getText().toString().equals("")
+                                            location.getText().toString().equals("") ||
+                                            phoneNumber.getText().toString().equals("")
 
                                             ) {
 
@@ -190,6 +202,7 @@ public class NextActivity extends AppCompatActivity {
                                         lName = lastName.getText().toString();
                                         DOB = dateOfBirth.getText().toString();
                                         userLocation = location.getText().toString();
+                                        userPhone = phoneNumber.getText().toString();
 
 
                                         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -207,6 +220,7 @@ public class NextActivity extends AppCompatActivity {
                                         newPost.put("Last Name", lName);
                                         newPost.put("Date of Birth", DOB);
                                         newPost.put("Location", userLocation);
+                                        newPost.put("user's phone number", userPhone);
 
                                         //now set the value to current user databade
                                         current_user_db.setValue(newPost);
@@ -238,6 +252,35 @@ public class NextActivity extends AppCompatActivity {
                 return;
             }
         };
+
+
+        myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+        dateOfBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(NextActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
+
+    private void updateLabel() {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        dateOfBirth.setText(sdf.format(myCalendar.getTime()));
     }
 
     private void sendEmailVerification() {

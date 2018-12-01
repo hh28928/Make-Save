@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
+//import com.basgeekball.awesomevalidation.AwesomeValidation;
+//import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,14 +25,14 @@ public class EnterUserDetails extends AppCompatActivity {
     Button btn_next;
     String email, name, password;
     private FirebaseAuth firebaseAuth;
-    AwesomeValidation awesomeValidation;
+    //AwesomeValidation awesomeValidation;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_user_details);
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        //awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
         setupUIViews();
 
@@ -50,38 +50,38 @@ public class EnterUserDetails extends AppCompatActivity {
         edit_dob = (EditText) findViewById(R.id.date_of_birth);
         btn_next = (Button) findViewById(R.id.next_btn);
 
-        String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
-        awesomeValidation.addValidation(EnterUserDetails.this, R.id.first_name, "[a-zA-Z\\s]+", R.string.first_name_Err);
-        awesomeValidation.addValidation(EnterUserDetails.this, R.id.last_name, "[a-zA-Z\\s]+", R.string.last_name_Err);
-        awesomeValidation.addValidation(EnterUserDetails.this, R.id.et_email, android.util.Patterns.EMAIL_ADDRESS, R.string.email_Err);
-        // awesomeValidation.addValidation(EnterUserDetails.this,R.id.phno, RegexTemplate.TELEPHONE,R.string.phoneerr);
-        awesomeValidation.addValidation(EnterUserDetails.this, R.id.pass, regexPassword, R.string.password_Err);
-        //Address
-        awesomeValidation.addValidation(EnterUserDetails.this, R.id.address, "[0-9a-zA-Z\\s]+", R.string.address_Err);
+//        String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
+//        awesomeValidation.addValidation(EnterUserDetails.this, R.id.first_name, "[a-zA-Z\\s]+", R.string.first_name_Err);
+//        awesomeValidation.addValidation(EnterUserDetails.this, R.id.last_name, "[a-zA-Z\\s]+", R.string.last_name_Err);
+//        awesomeValidation.addValidation(EnterUserDetails.this, R.id.et_email, android.util.Patterns.EMAIL_ADDRESS, R.string.email_Err);
+//        // awesomeValidation.addValidation(EnterUserDetails.this,R.id.phno, RegexTemplate.TELEPHONE,R.string.phoneerr);
+//        awesomeValidation.addValidation(EnterUserDetails.this, R.id.pass, regexPassword, R.string.password_Err);
+//        //Address
+//        awesomeValidation.addValidation(EnterUserDetails.this, R.id.address, "[0-9a-zA-Z\\s]+", R.string.address_Err);
     }
 
 
-    public void onclicknext(View view) {
-        if (awesomeValidation.validate()) {
-            //Upload data to the database
-            String user_email = edit_email.getText().toString().trim();
-            String user_password = edit_pass.getText().toString().trim();
-
-            firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    if (task.isSuccessful()) {
-                        sendEmailVerification();
-                    } else {
-                        Toast.makeText(EnterUserDetails.this, "Registration Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        } else {
-            Toast.makeText(EnterUserDetails.this, "Error", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    public void onclicknext(View view) {
+//        //if (awesomeValidation.validate()) {
+//            //Upload data to the database
+//            String user_email = edit_email.getText().toString().trim();
+//            String user_password = edit_pass.getText().toString().trim();
+//
+//            firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                @Override
+//                public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                    if (task.isSuccessful()) {
+//                        sendEmailVerification();
+//                    } else {
+//                        Toast.makeText(EnterUserDetails.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+//        } else {
+//            Toast.makeText(EnterUserDetails.this, "Error", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void sendEmailVerification() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
