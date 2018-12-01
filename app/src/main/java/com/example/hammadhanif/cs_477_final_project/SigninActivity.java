@@ -34,16 +34,26 @@ public class SigninActivity extends AppCompatActivity {
             return;
         } else {
             String phone = phone_et.getText().toString();
+            String type = "Provider";
             Intent providerIntent = new Intent(this, ProviderActivity.class);
             providerIntent.putExtra("PHONE", phone);
+            providerIntent.putExtra("TYPE", type);
             startActivity(providerIntent);
         }
     }
 
     public void OnclickUser(View view) {
-        Intent UserConfirmation = new Intent(this, User_Confirmation.class);
-        startActivity(UserConfirmation);
-
+        if (phone_et.getText().toString().equals("")) {
+            Toast.makeText(this, "Phone Number Not Entered!", Toast.LENGTH_LONG).show();
+            return;
+        } else {
+            String phone = phone_et.getText().toString();
+            String type = "User";
+            Intent UserConfirmation = new Intent(this, User_Confirmation.class);
+            UserConfirmation.putExtra("PHONE", phone);
+            UserConfirmation.putExtra("TYPE", type);
+            startActivity(UserConfirmation);
+        }
     }
 
 
@@ -53,5 +63,10 @@ public class SigninActivity extends AppCompatActivity {
         Intent signInThroughEmail = new Intent(this, SignInUsingEmail.class);
         startActivity(signInThroughEmail);
 
+    }
+
+    public void onClickRegister(View view) {
+        Intent needToRegister = new Intent(this, RegisterActivity.class);
+        startActivity(needToRegister);
     }
 }
