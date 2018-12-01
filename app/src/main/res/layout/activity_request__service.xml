@@ -49,27 +49,16 @@
             android:textAlignment="center"
             android:gravity="center"/>
 
-
-        <TextView
-            android:id="@+id/textViewPrice"
+        <Button
+            android:id="@+id/Pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/moreInfoEditText"
-            android:layout_marginBottom="211dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="205dp"
             android:gravity="center"
-            android:text="How much would you like to pay?"
-            android:layout_alignLeft="@+id/moreInfoEditText" />
-
-        <EditText
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textViewPrice"
-            android:layout_toEndOf="@+id/textViewPrice"
-            android:hint="30"
-            android:inputType="number"
-            android:layout_toRightOf="@+id/textViewPrice" />
+            android:onClick="onclickPayment"
+            android:text="Payment" />
 
 
         <FrameLayout

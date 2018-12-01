@@ -12,8 +12,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -50,8 +48,10 @@
         <activity android:name=".User_Registration" />
         <activity android:name=".EnterUserDetails" />
         <activity android:name=".CurrentLocationMap" />
-        <activity android:name=".SignInUsingEmail"></activity>
-        <activity android:name=".PhotoActivity"></activity>
+        <activity android:name=".SignInUsingEmail" />
+        <activity android:name=".PhotoActivity" />
+        <activity android:name=".PaymentDetails" />
+        <activity android:name=".Paymentactivity"></activity>
     </application>
 
 </manifest>
