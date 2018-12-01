@@ -148,14 +148,16 @@ public class NextActivity extends AppCompatActivity {
                                     boolean passwordLengthFine = true;
 
                                     //checking if some fields NOT ALL OF THEM, are empty..
-
+                                    //TODO
+                                    //FIX THE APP CRASHING
                                     if (email.getText().toString().equals("") ||
                                             firstName.getText().toString().equals("") ||
                                             lastName.getText().toString().equals("") ||
-                                            //dateOfBirth.getText().toString().equals("") ||
+                                            dateOfBirth.getText().toString().equals("") ||
                                             password.getText().toString().equals("") ||
                                             location.getText().toString().equals("") ||
                                             phoneNumber.getText().toString().equals("")
+
 
                                             ) {
 

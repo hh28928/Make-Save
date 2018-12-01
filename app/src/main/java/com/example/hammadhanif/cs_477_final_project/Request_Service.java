@@ -10,7 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Switch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Request_Service extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -19,10 +24,17 @@ public class Request_Service extends AppCompatActivity implements NavigationView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request__service);
         //setting the title of the activity
         this.setTitle("New Services");
+        ListView listView = (ListView) findViewById(R.id.listview_services);
+        List<String> array_list = new ArrayList<>();
+        array_list.add("Washing Machine");
+        array_list.add("Air Condition");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,array_list);
+        listView.setAdapter(arrayAdapter);
 
 
 
