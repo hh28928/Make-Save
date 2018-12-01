@@ -36,11 +36,9 @@ public class Request_Service extends AppCompatActivity implements NavigationView
         List<String> array_list = new ArrayList<>();
         array_list.add("Washing Machine");
         array_list.add("Air Condition");
+        array_list.add("Electrical");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,array_list);
         listView.setAdapter(arrayAdapter);
-
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
