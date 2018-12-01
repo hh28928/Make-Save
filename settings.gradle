@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':geonames-1.1.14', ':jdom-1.0'

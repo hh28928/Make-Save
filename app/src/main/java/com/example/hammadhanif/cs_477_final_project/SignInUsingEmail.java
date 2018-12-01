@@ -14,12 +14,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SignInUsingEmail extends AppCompatActivity {
 
     EditText editEmail;
     EditText editPassword;
     Button signIn;
+
+    boolean userVerifiedEmail;
 
     private ProgressDialog progressDialog;
 
@@ -83,6 +86,7 @@ public class SignInUsingEmail extends AppCompatActivity {
 
         progressDialog.setMessage("Signing In...");
         progressDialog.show();
+        WasEmailVerified();
 
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                 this, new OnCompleteListener<AuthResult>() {
@@ -94,17 +98,33 @@ public class SignInUsingEmail extends AppCompatActivity {
                         //TODO: must check if the email belongs to user or provider
                         if(task.isSuccessful()){
 
-                            //start the next activity
-                            Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
-                            startActivity(UserProfile);
+                            //if user is trying to sign in with a virified email then start
+                            //next activity
+                            if(userVerifiedEmail == true){
+                                //start the next activity
+                                Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
+                                startActivity(UserProfile);
+                            }else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Please verify your email!", Toast.LENGTH_LONG).show();
+                            }
 
                         }
                     }
                 });
-
-
     }
 
 
+
+
+    //this method checks if the user verified his email or not.
+    private void WasEmailVerified(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //this checks if the
+        userVerifiedEmail = user.isEmailVerified();
+
+    }
 
 }
