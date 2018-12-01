@@ -53,6 +53,7 @@ public class NextActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
 
+
     String fName;
     String lName;
     String Pass;
@@ -61,6 +62,8 @@ public class NextActivity extends AppCompatActivity {
     String userLocation;
     String userPhone;
     Calendar myCalendar;
+
+    final String userType = "Provider";
 
     private FirebaseAuth.AuthStateListener firebaseAuthListner;
 
@@ -223,6 +226,7 @@ public class NextActivity extends AppCompatActivity {
                                         newPost.put("Date of Birth", DOB);
                                         newPost.put("Location", userLocation);
                                         newPost.put("user's phone number", userPhone);
+                                        newPost.put("User type is: ", userType);
 
                                         //now set the value to current user databade
                                         current_user_db.setValue(newPost);

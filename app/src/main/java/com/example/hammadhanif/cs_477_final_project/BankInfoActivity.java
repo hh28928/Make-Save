@@ -29,6 +29,7 @@ public class BankInfoActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
