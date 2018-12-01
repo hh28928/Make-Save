@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.hammadhanif.cs_477_final_project"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -39,6 +39,9 @@ dependencies {
 
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.google.firebase:firebase-core:16.0.5'
+
+    //paypal
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
 
 
 }
