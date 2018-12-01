@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +23,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,10 +49,20 @@ public class PhotoActivity extends AppCompatActivity {
 
     String profileImageUrl;
 
+    String userName;
+
+    DatabaseReference mDatabase;
+
+    TextView name;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+
+        name = findViewById(R.id.textView6);
 
         usersImage = findViewById(R.id.imageView12);
 
@@ -54,6 +70,40 @@ public class PhotoActivity extends AppCompatActivity {
 
         //initialzing firebase
         firebaseAuth = FirebaseAuth.getInstance();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        GetUserName();
+
+
+    }
+
+    //used to retrieve the name of the user.
+    private void GetUserName() {
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+        String user_id = user.getUid();
+
+        mDatabase.child("Users").child(user_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userName = (String) dataSnapshot.child("First Name").getValue();
+                name.setText(userName);
+                Toast.makeText(PhotoActivity.this,
+                        "this user name is: " + userName, Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        name.setText(userName);
+
+
 
 
     }
