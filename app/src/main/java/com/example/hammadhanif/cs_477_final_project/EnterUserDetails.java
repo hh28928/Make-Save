@@ -103,9 +103,13 @@ public class EnterUserDetails extends AppCompatActivity {
         }
     }
 
-    public void onClickservice(View view) {
+    public void onclickServicee(View view) {
         Intent providerIntent = new Intent(this, Request_Service.class);
         startActivity(providerIntent);
+    }
 
+    public void onclicksignin(View view) {
+        Intent providerIntent = new Intent(this, SigninActivity.class);
+        startActivity(providerIntent);
     }
 }

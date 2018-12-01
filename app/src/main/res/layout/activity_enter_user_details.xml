@@ -200,7 +200,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_shaped"
-        android:text="Next"
+        android:text="Register"
+        android:onClick="onclickServicee"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
@@ -238,7 +239,8 @@
             android:text="Sign in"
             android:textAllCaps="false"
             android:textColor="#000009"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:onClick="onclicksignin"/>
     </LinearLayout>
 
 
