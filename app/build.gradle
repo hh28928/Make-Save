@@ -42,6 +42,10 @@ dependencies {
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.google.firebase:firebase-core:16.0.5'
 
+    //messaging
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+
+
     //paypal
     implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
     implementation 'com.android.support:multidex:1.0.3'
