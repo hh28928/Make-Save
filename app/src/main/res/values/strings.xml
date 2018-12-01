@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">CS-477-Final-Project</string>
     <string name="title_activity_current_location_map">Map</string>
-
-
+    <string name="email_Err">Enter Email Address!</string>
+    <string name="password_Err">Enter Password! It must contain a lowercase, an uppercase, a number, and special</string>
+    <string name="first_name_Err">Enter Correct First Address!</string>
+    <string name="last_name_Err">Enter Correct last name!</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="address_Err">Enter Field!</string>
 
 </resources>
