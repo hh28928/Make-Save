@@ -109,6 +109,12 @@ public class EnterUserDetails extends AppCompatActivity {
                 Pass = password.getText().toString();
                 userEmail = email.getText().toString();
 
+                if (Pass.equals("") || userEmail.equals("")) {
+                    Toast.makeText(getApplicationContext(),
+                            "Please add the missing information!",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 //once we start this function, a progress dialog will appear.
                 progressDialog.setMessage("Registering User...");

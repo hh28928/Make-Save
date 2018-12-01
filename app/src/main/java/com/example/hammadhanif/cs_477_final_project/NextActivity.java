@@ -2,7 +2,6 @@ package com.example.hammadhanif.cs_477_final_project;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -112,6 +111,12 @@ public class NextActivity extends AppCompatActivity {
                 //saving the email and password
                 Pass = password.getText().toString();
                 userEmail = email.getText().toString();
+                if (Pass.equals("") || userEmail.equals("")) {
+                    Toast.makeText(getApplicationContext(),
+                            "Please add the missing information!",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
 
 
                 //once we start this function, a progress dialog will appear.
@@ -153,15 +158,9 @@ public class NextActivity extends AppCompatActivity {
                                     //checking if some fields NOT ALL OF THEM, are empty..
                                     //TODO
                                     //FIX THE APP CRASHING
-                                    if (email.getText().toString().equals("") ||
-                                            firstName.getText().toString().equals("") ||
-                                            lastName.getText().toString().equals("") ||
-                                            dateOfBirth.getText().toString().equals("") ||
-                                            password.getText().toString().equals("") ||
-                                            location.getText().toString().equals("") ||
+                                    if (email.getText().toString().equals("") || firstName.getText().toString().equals("") || lastName.getText().toString().equals("") ||
+                                            dateOfBirth.getText().toString().equals("") || password.getText().toString().equals("") || location.getText().toString().equals("") ||
                                             phoneNumber.getText().toString().equals("")
-
-
                                             ) {
 
                                         Toast.makeText(getApplicationContext(),
