@@ -112,7 +112,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
         android:text="Next"
-        android:onClick="onClickNext"
+        android:onClick="SaveAccountInformation"
         android:textAllCaps="false"
         android:background="@drawable/btn_shaped"
         android:textColor="@color/white"

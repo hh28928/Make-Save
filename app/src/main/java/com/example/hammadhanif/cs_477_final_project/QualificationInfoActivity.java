@@ -13,6 +13,10 @@ public class QualificationInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qualification_info);
     }
 
+
+
+
+
     public void onClickContinue(View view) {
         Intent continueIntent = new Intent(this, PhotoActivity.class);
         startActivity(continueIntent);
