@@ -102,4 +102,10 @@ public class EnterUserDetails extends AppCompatActivity {
             });
         }
     }
+
+    public void onClickservice(View view) {
+        Intent providerIntent = new Intent(this, Request_Service.class);
+        startActivity(providerIntent);
+
+    }
 }
