@@ -10,7 +10,7 @@
     tools:context=".Request_Service"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -24,13 +24,33 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listview_services"
+            android:background="@drawable/btn_shaped"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="More Information"
+            android:textSize="30dp"
+            android:background="@drawable/btn_shaped"
+
+            />
+
+
+
+
+
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
