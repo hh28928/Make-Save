@@ -32,7 +32,7 @@ public class NextActivity extends AppCompatActivity {
     Button register;
     EditText firstName;
     EditText lastName;
-    EditText email;
+    EditText email, address_et, city_state;
     static EditText dateOfBirth;
     EditText password;
     private ProgressDialog progressDialog;
@@ -56,7 +56,7 @@ public class NextActivity extends AppCompatActivity {
         email = findViewById(R.id.editText);
         dateOfBirth = findViewById(R.id.date_of_birth);
         password = findViewById(R.id.editText8);
-
+        address_et = findViewById(R.id.address);
         /*
         since this is an internet operation it will take time
         so we will make a progress bar...
