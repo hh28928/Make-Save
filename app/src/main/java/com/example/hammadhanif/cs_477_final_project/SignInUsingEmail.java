@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,6 +21,8 @@ public class SignInUsingEmail extends AppCompatActivity {
     EditText editEmail;
     EditText editPassword;
     Button signIn;
+
+    boolean userVerifiedEmail;
 
     private ProgressDialog progressDialog;
 
@@ -40,17 +40,28 @@ public class SignInUsingEmail extends AppCompatActivity {
         signIn = findViewById(R.id.UserSignIn);
 
         progressDialog = new ProgressDialog(this);
+
         //initialize the firebase object:
         firebaseAuth = FirebaseAuth.getInstance();
+
+//        //check if user is already logged in:
+//        if(firebaseAuth.getCurrentUser() != null){
+//
+//            //directly start the next activity
+//            Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
+//            startActivity(UserProfile);
+//        }
+
 
     }
 
 
 
     //TODO: intent, check if same, allow user if in database to sign in
-    public void UserSignIn(View view) {
-        String email = editEmail.getText().toString().trim();
-        String password = editPassword.getText().toString().trim();
+    public void UserSignIn(View view){
+
+        String email = editEmail.getText().toString();
+        String password = editPassword.getText().toString();
 
         if (email.equals("")) {
 
@@ -59,7 +70,9 @@ public class SignInUsingEmail extends AppCompatActivity {
                     "Please enter your email!",
                     Toast.LENGTH_LONG).show();
 
-        } else if (password.equals("")) {
+        }
+
+        else if (password.equals("")) {
 
 
             Toast.makeText(getApplicationContext(),
@@ -73,6 +86,7 @@ public class SignInUsingEmail extends AppCompatActivity {
 
         progressDialog.setMessage("Signing In...");
         progressDialog.show();
+        WasEmailVerified();
 
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                 this, new OnCompleteListener<AuthResult>() {
@@ -82,16 +96,35 @@ public class SignInUsingEmail extends AppCompatActivity {
 
                         //checks if the task is succesful:
                         //TODO: must check if the email belongs to user or provider
-                        if (task.isSuccessful()) {
+                        if(task.isSuccessful()){
 
-                            //start the next activity
-                            Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
-                            startActivity(UserProfile);
+                            //if user is trying to sign in with a virified email then start
+                            //next activity
+                            if(userVerifiedEmail == true){
+                                //start the next activity
+                                Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
+                                startActivity(UserProfile);
+                            }else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Please verify your email!", Toast.LENGTH_LONG).show();
+                            }
 
                         }
                     }
                 });
-
-    }
     }
 
+
+
+
+    //this method checks if the user verified his email or not.
+    private void WasEmailVerified(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //this checks if the
+        userVerifiedEmail = user.isEmailVerified();
+
+    }
+
+}

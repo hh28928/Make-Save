@@ -238,7 +238,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/btn_shaped"
-        android:onClick="onClickNext"
         android:text="Next"
         android:textAllCaps="false"
         android:textColor="@color/white"

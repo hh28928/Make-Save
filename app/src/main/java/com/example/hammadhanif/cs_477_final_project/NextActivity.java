@@ -2,29 +2,34 @@ package com.example.hammadhanif.cs_477_final_project;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-
-import java.text.SimpleDateFormat;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Locale;
 
 public class NextActivity extends AppCompatActivity {
@@ -32,46 +37,223 @@ public class NextActivity extends AppCompatActivity {
     Button register;
     EditText firstName;
     EditText lastName;
-    EditText email, address_et, city_state;
-    static EditText dateOfBirth;
+    EditText email;
+    EditText location;
+    EditText phoneNumber;
+
+    EditText dateOfBirth;
+
     EditText password;
+
+
     private ProgressDialog progressDialog;
 
     //Firebase authentication object.
-    private FirebaseAuth firebaseAuth;
-    AwesomeValidation awesomeValidation;
+
+    FirebaseAuth firebaseAuth;
+
+
+    String fName;
+    String lName;
+    String Pass;
+    String DOB;
+    String userEmail;
+    String userLocation;
+    String userPhone;
     Calendar myCalendar;
+
+    private FirebaseAuth.AuthStateListener firebaseAuthListner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
 
+
+        //calander
+
+
         //find the ids that will be saved in the database for now
+
         //TODO: the address should be saved as well.
 
         register = findViewById(R.id.next_btn);
+        email = findViewById(R.id.editText);
+        password = findViewById(R.id.editText8);
+
         firstName = findViewById(R.id.first_name);
         lastName = findViewById(R.id.last_name);
-        email = findViewById(R.id.editText);
         dateOfBirth = findViewById(R.id.date_of_birth);
-        password = findViewById(R.id.editText8);
-        address_et = findViewById(R.id.address);
+        location = findViewById(R.id.address);
+
+        phoneNumber = findViewById(R.id.phone_number);
+
         /*
         since this is an internet operation it will take time
         so we will make a progress bar...
          */
 
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         progressDialog = new ProgressDialog(this);
-        String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
-        awesomeValidation.addValidation(NextActivity.this,R.id.first_name, "[a-zA-Z\\s]+",R.string.first_name_Err);
-        awesomeValidation.addValidation(NextActivity.this,R.id.last_name, "[a-zA-Z\\s]+",R.string.last_name_Err);
-        awesomeValidation.addValidation(NextActivity.this,R.id.editText,android.util.Patterns.EMAIL_ADDRESS,R.string.email_Err);
-        awesomeValidation.addValidation(NextActivity.this,R.id.editText8,regexPassword,R.string.password_Err);
 
-        //firebase initializing:
+
         firebaseAuth = FirebaseAuth.getInstance();
+
+
+
+
+        //going to set an onclick listen for the register button.
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //saving the email and password
+                Pass = password.getText().toString();
+                userEmail = email.getText().toString();
+
+
+                //once we start this function, a progress dialog will appear.
+                progressDialog.setMessage("Registering User...");
+                progressDialog.show();
+
+                /*
+                 * use firebase to register the user:
+                 * we will also attach a listener to check if task is successful.
+                 * if the task is successful then start the next activity
+                 */
+
+                firebaseAuth.createUserWithEmailAndPassword(userEmail, Pass)
+                        .addOnCompleteListener(NextActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                if (task.isSuccessful()){
+                                    progressDialog.hide();
+
+                                    //if task is successful then we will send the user
+                                    //an email to be verified.
+                                    sendEmailVerification();
+
+                                    Toast.makeText(getApplicationContext(),
+                                            "Registered Successfully.",
+                                            Toast.LENGTH_LONG).show();
+
+                                    String userEmail = email.getText().toString();
+
+                                    //variable for the format of the email
+
+                                    boolean rightFormat = isEmailValid(userEmail);
+
+                                    boolean fieldsFilled = true;
+
+                                    boolean passwordLengthFine = true;
+
+                                    //checking if some fields NOT ALL OF THEM, are empty..
+
+                                    if (email.getText().toString().equals("") ||
+                                            firstName.getText().toString().equals("") ||
+                                            lastName.getText().toString().equals("") ||
+                                            //dateOfBirth.getText().toString().equals("") ||
+                                            password.getText().toString().equals("") ||
+                                            location.getText().toString().equals("") ||
+                                            phoneNumber.getText().toString().equals("")
+
+                                            ) {
+
+                                        Toast.makeText(getApplicationContext(),
+                                                "Please add the missing information!",
+                                                Toast.LENGTH_LONG).show();
+
+                                        fieldsFilled = false;
+                                    }
+
+
+                                    //checking the length of the password!
+                                    if (password.getText().toString().length() < 6) {
+
+                                        Toast.makeText(getApplicationContext(),
+                                                "Your Password is too short",
+                                                Toast.LENGTH_LONG).show();
+
+                                        passwordLengthFine = false;
+
+
+                                    }
+
+
+                                    if (rightFormat == false) {
+
+                                        Toast.makeText(getApplicationContext(),
+                                                "please write a correct email",
+                                                Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                    rightFormat = isEmailValid(userEmail);
+
+                                    if (passwordLengthFine == true && fieldsFilled == true && rightFormat == true) {
+
+                                        /*
+                                        when the account is created, we want to save his info
+                                        such as name, dob, address
+                                        */
+
+                                        //saving the fname, lastname and DOB...
+                                        fName = firstName.getText().toString();
+                                        lName = lastName.getText().toString();
+                                        DOB = dateOfBirth.getText().toString();
+                                        userLocation = location.getText().toString();
+                                        userPhone = phoneNumber.getText().toString();
+
+
+                                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                                        //check if there is a user:
+
+                                        String user_id = user.getUid();
+
+                                        //create a database reference:
+                                        DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                                                .child("Users").child(user_id);
+
+                                        Map newPost = new HashMap();
+
+                                        newPost.put("First Name", fName);
+                                        newPost.put("Last Name", lName);
+                                        newPost.put("Date of Birth", DOB);
+                                        newPost.put("Location", userLocation);
+                                        newPost.put("user's phone number", userPhone);
+
+                                        //now set the value to current user databade
+                                        current_user_db.setValue(newPost);
+
+                                        //start the next activity
+                                        Intent bankInfoInent = new Intent(getApplicationContext(), BankInfoActivity.class);
+                                        startActivity(bankInfoInent);
+                                    }
+
+                                } else {
+
+                                    Toast.makeText(getApplicationContext(),
+                                            "Couldn't Register, please try again!",
+                                            Toast.LENGTH_LONG).show();
+
+                                }
+
+                            }
+                        });
+            }
+        });
+
+        firebaseAuthListner = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                Intent intent = new Intent(NextActivity.this, BankInfoActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        };
+
+
         myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -101,63 +283,42 @@ public class NextActivity extends AppCompatActivity {
         dateOfBirth.setText(sdf.format(myCalendar.getTime()));
     }
 
-    //this function saves the info to the database:
-    private void registerUser() {
+    private void sendEmailVerification() {
 
-        String fName = firstName.getText().toString();
-        String lName = lastName.getText().toString();
-        final String Pass = password.getText().toString();
-        String DOB = dateOfBirth.getText().toString();
-        String userEmail = email.getText().toString();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        //once we start this function, a progress dialog will appear.
-
-        progressDialog.setMessage("Registering User...");
-        progressDialog.show();
-
-    }
-
-    public void onClickNext(View view) {
-        if (awesomeValidation.validate()) {
-            //Upload data to the database
-            String user_email = email.getText().toString().trim();
-            String user_password = password.getText().toString().trim();
-
-            Log.d("TAG", "" + user_email + " " + user_password);
-
-            firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        sendEmailVerification();
-                    } else {
-                        Toast.makeText(NextActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        } else {
-            Toast.makeText(NextActivity.this, "Error", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void sendEmailVerification(){
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser!=null){
-            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+        if(user != null){
+            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+
                     if(task.isSuccessful()){
-                        Toast.makeText(NextActivity.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_LONG).show();
-                        firebaseAuth.signOut();
-                        finish();
-                        startActivity(new Intent(NextActivity.this, MainActivity.class));
-                    }else{
-                        Toast.makeText(NextActivity.this, "Verification mail has'nt been sent!", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(getApplicationContext(),
+                                "Please verify your email!",
+                                Toast.LENGTH_LONG).show();
+
+                        //FirebaseAuth.s
+
                     }
+
                 }
             });
+
         }
+
+    }
+
+    //this function checks if the email is in the right format
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
 }
+
+
+
+
