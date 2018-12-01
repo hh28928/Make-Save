@@ -36,6 +36,15 @@
         android:layout_alignParentLeft="true"
         android:textStyle="bold"/>
 
+    <Button
+        android:id="@+id/PostJob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/btn_shaped"
+        android:onClick="onClickPostJob"
+        android:text="Post Job" />
+
 
 
 </RelativeLayout>
