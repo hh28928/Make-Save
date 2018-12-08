@@ -42,8 +42,11 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
     private boolean mlocationpermission = true;
     private static final int request_code = 1234;
     private GoogleMap mMap;
+    double lat;
+    double longitude;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
+
 
 
     @Override
@@ -51,6 +54,9 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_location_map);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        Intent intent = getIntent();
+        lat = intent.getDoubleExtra("Value1",0.0);
+       longitude = intent.getDoubleExtra("Value2",0.0);
         getLocationPermission();
 
     }
@@ -84,6 +90,16 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
             }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+//            Intent intent = getIntent();
+//            double lat = intent.getDoubleExtra("Value1",0.0);
+//            double longitude = intent.getDoubleExtra("Value2",0.0);
+
+            // Add a marker in Sydney and move the camera
+            LatLng address = new LatLng(lat, longitude);
+
+            mMap.addMarker(new MarkerOptions().position(address).title("User"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(address,10f));
 
         }
 
