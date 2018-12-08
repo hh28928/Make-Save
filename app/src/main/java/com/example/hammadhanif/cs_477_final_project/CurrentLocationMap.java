@@ -45,8 +45,6 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mMap;
     double lat;
     double longitude;
-    double lat2;
-    double longitude2;
     String lati;
     String longi;
 
@@ -102,19 +100,13 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
             SharedPreferences prefs = getSharedPreferences(PaymentDetails.MY_PREFS_NAME, MODE_PRIVATE);
             lati = prefs.getString("lat", "0");//"No name defined" is the default value.
             longi  = prefs.getString("longitude", "0"); //0 is the default value.
-            String lati2 = prefs.getString("lat2", "0");//"No name defined" is the default value.
-            String longi2  = prefs.getString("longitude2", "0"); //0 is the default value.
 
             Toast.makeText(this, lat +" " + longi, Toast.LENGTH_SHORT).show();
             lat = Double.parseDouble(lati);
             longitude = Double.parseDouble(longi);
-            lat2 = Double.parseDouble(lati2);
-            longitude2 = Double.parseDouble(longi2);
             // Add a marker in Sydney and move the camera
             LatLng address = new LatLng(lat, longitude);
-            LatLng address2 = new LatLng(lat2, longitude2);
 
-            mMap.addMarker(new MarkerOptions().position(address).title("Apply"));
             mMap.addMarker(new MarkerOptions().position(address).title("Apply"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(address,10f));
 
