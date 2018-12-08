@@ -49,7 +49,8 @@ public class PhotoActivity extends AppCompatActivity {
 
     String profileImageUrl;
 
-    String userName;
+    String userNameFirst;
+    String userNameLast;
 
     DatabaseReference mDatabase;
 
@@ -86,13 +87,15 @@ public class PhotoActivity extends AppCompatActivity {
 
         String user_id = user.getUid();
 
+        //retrieving first name and last name
         mDatabase.child("Users").child(user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userName = (String) dataSnapshot.child("First Name").getValue();
-                name.setText(userName);
+                userNameFirst = (String) dataSnapshot.child("First Name").getValue();
+                userNameLast = (String)  dataSnapshot.child("Last Name").getValue();
+                name.setText(userNameFirst + " " + userNameLast);
                 Toast.makeText(PhotoActivity.this,
-                        "this user name is: " + userName, Toast.LENGTH_LONG).show();
+                        "this user name is: " + userNameFirst, Toast.LENGTH_LONG).show();
 
             }
 
@@ -101,7 +104,10 @@ public class PhotoActivity extends AppCompatActivity {
 
             }
         });
-        name.setText(userName);
+
+
+
+        name.setText(userNameFirst + " " + userNameLast);
 
 
 
@@ -197,7 +203,8 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
         public void onClickContinue(View view) {
-            saveUserInfo();
+
+        saveUserInfo();
         }
 
 
@@ -224,6 +231,9 @@ public class PhotoActivity extends AppCompatActivity {
                         }
                     });
         }
+
+        Intent toMapActivity = new Intent(this, CurrentLocationMap.class);
+        startActivity(toMapActivity);
 
 
     }
