@@ -24,27 +24,50 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <ListView
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/newjob"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listview_services"
-            android:background="@drawable/btn_shaped"
-            android:layout_below="@+id/toolbar"
-            />
+            android:ems="10"
+            android:hint="Add a Job"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="25dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/border"
+            android:layout_below="@id/toolbar"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/newjob"
+            android:background="@drawable/rounded_border"
+            android:id="@+id/linearLayout">
 
-
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listview_services"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/newjob"/>
+        </LinearLayout>
 
         <EditText
             android:id="@+id/moreInfoEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/listview_services"
-            android:layout_marginBottom="143dp"
-            android:background="@drawable/btn_shaped"
+            android:layout_below="@id/linearLayout"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/rounded_border"
             android:ems="15"
             android:layout_centerInParent="true"
             android:hint="More Information "
+            android:inputType="textMultiLine"
             android:padding="20dp"
             android:textAlignment="center"
             android:gravity="center"/>
@@ -53,11 +76,11 @@
             android:id="@+id/Pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="205dp"
+            android:layout_below="@id/moreInfoEditText"
             android:gravity="center"
             android:onClick="onclickPayment"
+            android:background="@drawable/rounded_border"
             android:text="Payment" />
 
 
@@ -77,7 +100,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/draw_menu" />
+        app:menu="@menu/draw_menu" >
+
+    </android.support.design.widget.NavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>

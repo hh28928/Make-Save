@@ -130,6 +130,7 @@
             android:textAllCaps="false"
             android:gravity="left"
             android:text="Need to register"
+            android:onClick="onClickRegister"
             android:textColor="@color/white" />
     </LinearLayout>
 

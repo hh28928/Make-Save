@@ -45,7 +45,6 @@
         <activity android:name=".QualificationInfoActivity" />
         <activity android:name=".User_Confirmation" />
         <activity android:name=".Request_Service" />
-        <activity android:name=".User_Registration" />
         <activity android:name=".EnterUserDetails" />
         <activity android:name=".CurrentLocationMap" />
         <activity android:name=".SignInUsingEmail" />

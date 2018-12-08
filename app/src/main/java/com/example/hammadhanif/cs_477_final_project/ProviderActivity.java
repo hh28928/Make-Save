@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class ProviderActivity extends AppCompatActivity {
 
     EditText code;
-    String number;
+    String number, type;
 
     private String verificationid;
     private FirebaseAuth mAuth;
@@ -36,7 +36,7 @@ public class ProviderActivity extends AppCompatActivity {
         code = findViewById(R.id.digits_entered);
         progressBar = findViewById(R.id.progressbar);
         mAuth = FirebaseAuth.getInstance();
-
+        type = getIntent().getExtras().getString("TYPE");
         number = getIntent().getExtras().getString("PHONE");
         sendVerificationCode(number);
     }
@@ -64,11 +64,13 @@ public class ProviderActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-                            Intent intent = new Intent(ProviderActivity.this, CurrentLocationMap.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                            startActivity(intent);
+                            if (type.equals("Provider")) {
+                                Intent intent = new Intent(ProviderActivity.this, CurrentLocationMap.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(ProviderActivity.this, "You are not a Provider, Please try as a user Instead!", Toast.LENGTH_LONG).show();
+                            }
 
                         } else {
                             Toast.makeText(ProviderActivity.this, task.getException().getMessage(),
