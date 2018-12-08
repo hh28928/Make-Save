@@ -15,6 +15,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignInUsingEmail extends AppCompatActivity {
 
@@ -22,11 +27,15 @@ public class SignInUsingEmail extends AppCompatActivity {
     EditText editPassword;
     Button signIn;
 
+    DatabaseReference mDatabase;
+
     boolean userVerifiedEmail;
 
     private ProgressDialog progressDialog;
 
     //firebase object
+
+    String userType;
 
     private FirebaseAuth firebaseAuth;
 
@@ -43,6 +52,10 @@ public class SignInUsingEmail extends AppCompatActivity {
 
         //initialize the firebase object:
         firebaseAuth = FirebaseAuth.getInstance();
+
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
 //        //check if user is already logged in:
 //        if(firebaseAuth.getCurrentUser() != null){
@@ -101,9 +114,37 @@ public class SignInUsingEmail extends AppCompatActivity {
                             //if user is trying to sign in with a virified email then start
                             //next activity
                             if(userVerifiedEmail == true){
-                                //start the next activity
-                                Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
-                                startActivity(UserProfile);
+
+                                //I want to check the database and see if he is user or provider
+                                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                                String user_id = user.getUid();
+
+                                mDatabase.child("Users").child(user_id).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        userType = (String) dataSnapshot.child("User type is: ").getValue();
+                                        if(userType.equals("Provider")){
+
+                                            Intent intent = new Intent(getApplicationContext(), CurrentLocationMap.class);
+                                            startActivity(intent);
+
+                                        }
+                                        else{
+                                            //start the next activity
+                                            Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
+                                            startActivity(UserProfile);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
                             }else {
                                 Toast.makeText(getApplicationContext(),
                                         "Please verify your email!", Toast.LENGTH_LONG).show();
