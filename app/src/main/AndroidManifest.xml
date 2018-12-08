@@ -30,7 +30,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,7 +51,8 @@
         <activity android:name=".SignInUsingEmail" />
         <activity android:name=".PhotoActivity" />
         <activity android:name=".PaymentDetails" />
-        <activity android:name=".Paymentactivity"></activity>
+        <activity android:name=".Paymentactivity" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

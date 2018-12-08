@@ -124,12 +124,14 @@ public class SignInUsingEmail extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         userType = (String) dataSnapshot.child("User type is: ").getValue();
+                                        //if user is equal to provider then go to map activity
                                         if(userType.equals("Provider")){
 
                                             Intent intent = new Intent(getApplicationContext(), CurrentLocationMap.class);
                                             startActivity(intent);
 
                                         }
+                                        //if user is not provider, go to request...
                                         else{
                                             //start the next activity
                                             Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
