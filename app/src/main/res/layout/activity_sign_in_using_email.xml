@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,6 +26,8 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="Email"
+        android:inputType="text"
+        android:textSize="10sp"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
@@ -38,6 +38,8 @@
         android:layout_below="@+id/usersEmail"
         android:layout_centerHorizontal="true"
         android:ems="10"
+        android:textSize="10sp"
+        android:inputType="textPassword"
         android:hint="Password"
         android:textAlignment="center"
         android:textColor="@color/white" />
@@ -52,6 +54,4 @@
         android:background="@drawable/btn_shaped"
         android:text="Sign In"
         android:onClick="UserSignIn"/>
-
-
 </RelativeLayout>

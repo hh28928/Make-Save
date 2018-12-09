@@ -21,8 +21,6 @@
             android:id="@+id/payment"
             android:icon="@drawable/ic_payment"
             android:title="Payment" />
-
-
     </group>
 
 

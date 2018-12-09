@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickSignIn(View view) {
-        Intent signIn_Intent = new Intent(MainActivity.this, SigninActivity.class);
+        Intent signIn_Intent = new Intent(MainActivity.this, SignInUsingEmail.class);
         startActivity(signIn_Intent);
     }
 

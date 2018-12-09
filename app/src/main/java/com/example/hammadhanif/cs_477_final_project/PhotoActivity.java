@@ -10,12 +10,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hammadhanif.cs_477_final_project.config.StringUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +36,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhotoActivity extends AppCompatActivity {
 
@@ -55,6 +59,7 @@ public class PhotoActivity extends AppCompatActivity {
     DatabaseReference mDatabase;
 
     TextView name;
+    String imageFileName;
 
 
 
@@ -155,9 +160,11 @@ public class PhotoActivity extends AppCompatActivity {
     //uploading the image to the cloud:
     private void uploadImageToFirebaseStorage(){
 
+        this.imageFileName = StringUtility.getRandomString(20) + ".jpg";
+        Log.d("TAG", "Image Name is: " + imageFileName);
         //path to the file
         final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference
-                ("profilepics/"+ System.currentTimeMillis() + ".jpg");
+                ("profilepics/ "+ imageFileName);
 
         if (uriProfileImage != null) {
 
@@ -211,14 +218,30 @@ public class PhotoActivity extends AppCompatActivity {
         //once user hits continue, we will save the image:
     public void saveUserInfo(){
 
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (usersImage.getDrawable() == null) {
+            Toast.makeText(this, "You must select a profile Image", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        if(firebaseUser != null && profileImageUrl != null){
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        String user_id = user.getUid();
+
+        DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                .child("Users").child(user_id).child("Image_Link");
+
+        Map newPost = new HashMap();
+        newPost.put("Image", imageFileName);
+
+        current_user_db.setValue(newPost);
+
+
+        if(user != null && profileImageUrl != null){
 
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(profileImageUrl)).build();
 
-            firebaseUser.updateProfile(profile)
+            user.updateProfile(profile)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
