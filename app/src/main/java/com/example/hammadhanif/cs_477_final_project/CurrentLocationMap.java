@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
+import android.support.v7.widget.Toolbar;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -58,6 +58,10 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
         lat = intent.getDoubleExtra("Value1",0.0);
        longitude = intent.getDoubleExtra("Value2",0.0);
         getLocationPermission();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
     }
 

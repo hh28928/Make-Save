@@ -2,6 +2,7 @@ package com.example.hammadhanif.cs_477_final_project;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,21 +51,8 @@ public class SignInUsingEmail extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-        //initialize the firebase object:
         firebaseAuth = FirebaseAuth.getInstance();
-
-
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-//        //check if user is already logged in:
-//        if(firebaseAuth.getCurrentUser() != null){
-//
-//            //directly start the next activity
-//            Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
-//            startActivity(UserProfile);
-//        }
-
 
     }
 
@@ -93,9 +81,6 @@ public class SignInUsingEmail extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
 
         }
-
-        //if email and password are not empty then
-        //display the progress dialog
 
         progressDialog.setMessage("Signing In...");
         progressDialog.show();
@@ -155,10 +140,6 @@ public class SignInUsingEmail extends AppCompatActivity {
                 });
     }
 
-
-
-
-    //this method checks if the user verified his email or not.
     private void WasEmailVerified(){
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

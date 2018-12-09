@@ -332,7 +332,7 @@ public class EnterUserDetails extends AppCompatActivity {
     }
 
     public void onclicksignin(View view) {
-        Intent providerIntent = new Intent(this, SigninActivity.class);
+        Intent providerIntent = new Intent(this, SignInUsingEmail.class);
         startActivity(providerIntent);
     }
 }
