@@ -34,6 +34,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "CurrentLocationMap";
@@ -47,6 +50,7 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
     double longitude;
     String lati;
     String longi;
+    Map<String, String> markerHashMap = new HashMap<>();
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
@@ -110,7 +114,8 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
                 // Add a marker in Sydney and move the camera
                 LatLng address = new LatLng(lat, longitude);
 
-                mMap.addMarker(new MarkerOptions().position(address).title("Apply" +Integer.toString(i) ));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(address).title("Apply" +Integer.toString(i) ));
+                markerHashMap.put(marker.getId(),"Apply" +Integer.toString(i));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(address,5f));
 
 
