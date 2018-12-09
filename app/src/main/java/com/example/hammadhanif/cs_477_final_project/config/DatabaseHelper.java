@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    final static String NAME = "jobtable";
-    final static String _ID = "_id";
-    final static String ITEM = "item";
-    final static String DESC = "description";
+    public final static String NAME = "jobtable";
+    public final static String _ID = "_id";
+    public final static String ITEM = "item";
+    public final static String DESC = "description";
     final static String CREATE_CMD = "CREATE TABLE " +NAME+ "(" +_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+ ITEM+" TEXT,"+ DESC +" TEXT)";
     final private static Integer VERSION = 4;
     final Context context;

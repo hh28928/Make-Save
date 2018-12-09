@@ -1,6 +1,8 @@
 package com.example.hammadhanif.cs_477_final_project;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -15,16 +17,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hammadhanif.cs_477_final_project.config.DatabaseHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,9 +57,11 @@ public class Request_Service extends AppCompatActivity implements NavigationView
     private static final int CHOOSE_IMAGE = 102;
     Uri uriProfileImage;
 
+    EditText addJob, description;
     TextView name;
     String userNameFirst;
     String userNameLast;
+    ListView listView;
 
     ImageView usersImage;
 
@@ -65,6 +75,13 @@ public class Request_Service extends AppCompatActivity implements NavigationView
     TextView navUsername;
 
     ProgressBar progressBar;
+    private SQLiteDatabase db = null;
+    private DatabaseHelper dbHelper = null;
+
+    SimpleCursorAdapter myAdapter;
+    Cursor mCursor;
+
+    final String[] all_columns = {dbHelper._ID, dbHelper.ITEM, dbHelper.DESC};
 
 
     @Override
@@ -77,17 +94,59 @@ public class Request_Service extends AppCompatActivity implements NavigationView
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        addJob = findViewById(R.id.newjob);
+        description = findViewById(R.id.moreInfoEditText);
+        listView = findViewById(R.id.listview_services);
 
-
-
-
-        //setting the title of the activity
-        this.setTitle("New Services");
-        ListView listView = (ListView) findViewById(R.id.listview_services);
         List<String> array_list = new ArrayList<>();
         array_list.add("Washing Machine");
         array_list.add("Air Condition");
         array_list.add("Electrical");
+        //setting the title of the activity
+        this.setTitle("New Services");
+        ListView listView = (ListView) findViewById(R.id.listview_services);
+        final TextView.OnEditorActionListener mReturnListener = new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
+                    String input = v.getText().toString();
+
+                    Toast.makeText(getApplicationContext(), "Adding " + input, Toast.LENGTH_SHORT).show();
+                    v.setText("");
+                }
+                return true;
+            }
+        };
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = ((TextView) view).getText().toString();
+                Cursor c = myAdapter.getCursor();
+                c.moveToPosition(position);
+                String service = c.getString(0);
+                mCursor = db.query(dbHelper.NAME,all_columns, null, null, null, null,null);
+                myAdapter.swapCursor(mCursor);
+                Toast.makeText(getApplicationContext(), "Selected " + item, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dbHelper = new DatabaseHelper(this);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                db = dbHelper.getWritableDatabase();
+                String item = ((TextView)view).getText().toString();
+                Cursor c = myAdapter.getCursor();
+                c.moveToPosition(position);
+                String exercise = c.getString(0);
+                db.delete(dbHelper.NAME,"_id=?", new String[]{ exercise});
+                mCursor = db.query(dbHelper.NAME,all_columns,null, null, null, null,null);
+                myAdapter.swapCursor(mCursor);
+
+                return true;
+            }
+        });
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,array_list);
         listView.setAdapter(arrayAdapter);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -149,6 +208,7 @@ public class Request_Service extends AppCompatActivity implements NavigationView
         toggle.syncState();
 
     }
+
 
 
     @Override
