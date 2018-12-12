@@ -37,19 +37,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProviderActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".NextActivity" />
-        <activity android:name=".BankInfoActivity" />
-        <activity android:name=".QualificationInfoActivity" />
-        <activity android:name=".Request_Service" />
-        <activity android:name=".EnterUserDetails" />
-        <activity android:name=".CurrentLocationMap" />
-        <activity android:name=".SignInUsingEmail" />
-        <activity android:name=".PhotoActivity" />
-        <activity android:name=".PaymentDetails" />
-        <activity android:name=".Paymentactivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".ProviderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NextActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BankInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".QualificationInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Request_Service"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EnterUserDetails"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CurrentLocationMap"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignInUsingEmail"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PhotoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PaymentDetails"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Paymentactivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

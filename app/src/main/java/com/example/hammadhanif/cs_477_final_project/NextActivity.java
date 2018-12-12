@@ -147,17 +147,14 @@ public class NextActivity extends AppCompatActivity {
 
                                     String userEmail = email.getText().toString();
 
-                                    //variable for the format of the email
-
                                     boolean rightFormat = isEmailValid(userEmail);
 
                                     boolean fieldsFilled = true;
 
                                     boolean passwordLengthFine = true;
 
-                                    //checking if some fields NOT ALL OF THEM, are empty..
                                     //TODO
-                                    //FIX THE APP CRASHING
+
                                     if (email.getText().toString().equals("") || firstName.getText().toString().equals("") || lastName.getText().toString().equals("") ||
                                             dateOfBirth.getText().toString().equals("") || password.getText().toString().equals("") || location.getText().toString().equals("") ||
                                             phoneNumber.getText().toString().equals("")
@@ -302,9 +299,6 @@ public class NextActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),
                                 "Please verify your email!",
                                 Toast.LENGTH_LONG).show();
-
-                        //FirebaseAuth.s
-
                     }
 
                 }
