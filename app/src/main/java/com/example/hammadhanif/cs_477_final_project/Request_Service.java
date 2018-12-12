@@ -120,8 +120,8 @@ public class Request_Service extends AppCompatActivity implements NavigationView
                 userNameFirst = (String) dataSnapshot.child("First Name").getValue();
                 userNameLast = (String)  dataSnapshot.child("Last Name").getValue();
                 navUsername.setText(userNameFirst + " " + userNameLast);
-                Toast.makeText(Request_Service.this,
-                        "this user name is: " + userNameFirst, Toast.LENGTH_LONG).show();
+//                Toast.makeText(Request_Service.this,
+//                        "this user name is: " + userNameFirst, Toast.LENGTH_LONG).show();
 
             }
 

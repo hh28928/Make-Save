@@ -25,7 +25,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class PaymentDetails extends AppCompatActivity {
 
@@ -37,11 +40,21 @@ public class PaymentDetails extends AppCompatActivity {
     double longitude;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     public static ArrayList data_add;
+
+    String user_id;
+
+    ArrayList<String> listOfLocations = new ArrayList<String>();
+
+
     DatabaseReference mDatabase;
 
     String location;
 
     FirebaseAuth firebaseAuth;
+
+    String userType;
+
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +63,48 @@ public class PaymentDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_details);
 
+        //initialzing firebase
+
+
+        text1 = (TextView) findViewById(R.id.text_idd);
+        text22 = (TextView) findViewById(R.id.textamout);
+        text3 = (TextView) findViewById(R.id.textstatus);
+        PostJob = (Button) findViewById(R.id.PostJob);
+        Intent intent = getIntent();
+        data_add = new ArrayList();
+        try {
+            JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
+            showDetails(jsonObject.getJSONObject("response"), intent.getStringExtra("PaymentAmount"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        text1 = (TextView) findViewById(R.id.text_idd);
-        text22 = (TextView) findViewById(R.id.textamout);
-        text3=(TextView)findViewById(R.id.textstatus);
-        PostJob = (Button) findViewById(R.id.PostJob);
-        Intent intent = getIntent();
-        data_add = new ArrayList();
-        try{
-            JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
-            showDetails(jsonObject.getJSONObject("response"),intent.getStringExtra("PaymentAmount"));
-        }catch(JSONException e)
-        {
-            e.printStackTrace();
+
+        user = firebaseAuth.getCurrentUser();
+
+        user_id = user.getUid();
+
+        mDatabase.child("Users").child(user_id).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
+                location = (String) dataSnapshot.child("Location").getValue();
+//
+//                Toast.makeText(PaymentDetails.this,
+//                        "Location" + location, Toast.LENGTH_LONG).show();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         }
-    }
 
     private void showDetails(JSONObject response, String paymentAmount) {
 
@@ -76,24 +113,89 @@ public class PaymentDetails extends AppCompatActivity {
             text22.setText(response.getString("state"));
             text3.setText("$" + paymentAmount);
 
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
 
-    public void onClickPostJob(View view) {
-        String address = "4450 Rivanna River Way";
-        String address2 = "Fair Oaks Mall";
-        //Toast.makeText(this, "4450 Rivanna River Way", Toast.LENGTH_SHORT).show();
+
+    public void onClickPostJob(View v) {
+
+
+        //flagging that this user started a job.
+        user = firebaseAuth.getCurrentUser();
+
+        user_id = user.getUid();
+
+        //create a database reference:
+        DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                .child("Users").child(user_id).child("services");
+
+        Map newPost = new HashMap();
+
+        //now set the value to current user database
+        current_user_db.setValue(newPost);
+
+
+        newPost.put("User Posted a Job", "posted");
+
+
+        //now set the value to current user databade
+        current_user_db.setValue(newPost);
+
+
+        //looping through users and saving flaged users to an array
+
+
+
+        mDatabase.child("Users").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    listOfLocations.clear();
+                    for (com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                        Map userType = (HashMap) postSnapshot.child("services").getValue();
+                        if (userType != null) {
+                            if (userType.size() > 0) {
+                                Iterator it = userType.entrySet().iterator();
+                                while (it.hasNext()) {
+                                    Map.Entry pair = (Map.Entry) it.next();
+                                    System.out.println(pair.getKey() + " = " + pair.getValue());
+                                    if (pair.getKey().equals("User Posted a Job")) {
+                                        if (pair.getValue().equals("posted")) {
+                                            listOfLocations.add((String) postSnapshot.child("Location").getValue());
+                                        }
+                                    }
+                                    //it.remove(); // avoids a ConcurrentModificationException
+                                }
+                            }
+                        }
+                        Toast.makeText(PaymentDetails.this, "number of people:" + listOfLocations.size(), Toast.LENGTH_LONG).show();
+
+
+                    }
+
+
+                }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+         //Toast.makeText(this, "job for 4450 Rivanna River Way has been posted", Toast.LENGTH_SHORT).show();
         Geocoder geo = new Geocoder(PaymentDetails.this);
         List<Address> list_address = new ArrayList<>();
 
         try {
-            list_address = geo.getFromLocationName(address, 1);
+            list_address = geo.getFromLocationName(location, 1);
 
 
         } catch (IOException e) {
@@ -108,15 +210,12 @@ public class PaymentDetails extends AppCompatActivity {
             editor.putString("lat", Double.toString(lat));
             editor.putString("longitude", Double.toString(longitude));
             editor.apply();
-//            Intent intent = new Intent(CurrentLocationMap.class).putExtra("lat",lat);
-//
-//            LocalBroadcastManager.getInstance(Activity1.this).sendBroadcast(intent);
-//            Intent intent = new Intent("INTENT_NAME").putExtra(BG_SELECT, hexColor);
-//            LocalBroadcastManager.getInstance(Activity1.this).sendBroadcast(intent);
-//            Intent i = new Intent(this, CurrentLocationMap.class);
-//            i.putExtra("Value1", lat);
-//            i.putExtra("Value2", longitude);
-            //startActivity(i);
+
+
+
+
         }
+
+
     }
 }
