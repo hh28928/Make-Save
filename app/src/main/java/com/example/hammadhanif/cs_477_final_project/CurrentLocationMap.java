@@ -51,6 +51,7 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
     String lati;
     String longi;
     Map<String, String> markerHashMap = new HashMap<>();
+    Map<String, String> UserInfo = new HashMap<>();
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
@@ -68,6 +69,9 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        UserInfo.put("Appy1","Washing Machine not working");
+        UserInfo.put("Apply2", "AC not working");
+        UserInfo.put("Apply3", "Fan not working");
 
 
     }
@@ -117,20 +121,22 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
                 Marker marker = mMap.addMarker(new MarkerOptions().position(address).title("Apply" +Integer.toString(i) ));
                 markerHashMap.put(marker.getId(),"Apply" +Integer.toString(i));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(address,5f));
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        String userId = markerHashMap.get(marker.getId());
+                        Intent intent = new Intent(CurrentLocationMap.this, Apply.class);
+                        intent.putExtra("Problem",UserInfo.get(userId));
+                        startActivity(intent);
+
+                        return false;
+                    }
+                });
+
+
 
 
             }
-//            lati = prefs.getString("lat", "0");//"No name defined" is the default value.
-//            longi  = prefs.getString("longitude", "0"); //0 is the default value.
-//
-//            Toast.makeText(this, lat +" " + longi, Toast.LENGTH_SHORT).show();
-//            lat = Double.parseDouble(lati);
-//            longitude = Double.parseDouble(longi);
-//            // Add a marker in Sydney and move the camera
-//            LatLng address = new LatLng(lat, longitude);
-//
-//            mMap.addMarker(new MarkerOptions().position(address).title("Apply"));
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(address,10f));
 
         }
 
