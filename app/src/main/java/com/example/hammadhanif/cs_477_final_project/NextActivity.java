@@ -296,16 +296,15 @@ public class NextActivity extends AppCompatActivity {
 
                     if(task.isSuccessful()){
 
-                        Toast.makeText(getApplicationContext(),
-                                "Please verify your email!",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(NextActivity.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_LONG).show();
+                        finish();
+                        startActivity(new Intent(NextActivity.this, BankInfoActivity.class));
+                    } else {
+                        Toast.makeText(NextActivity.this, "Verification mail has'nt been sent!", Toast.LENGTH_SHORT).show();
                     }
-
                 }
             });
-
         }
-
     }
 
     //this function checks if the email is in the right format
