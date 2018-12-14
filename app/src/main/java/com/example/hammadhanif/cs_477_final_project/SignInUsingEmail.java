@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,18 +28,13 @@ public class SignInUsingEmail extends AppCompatActivity {
     EditText editEmail;
     EditText editPassword;
     Button signIn;
-
-    DatabaseReference mDatabase;
-
-    boolean userVerifiedEmail;
-
+    private String authUserId, userType;
     private ProgressDialog progressDialog;
 
     //firebase object
 
-    String userType;
-
     private FirebaseAuth firebaseAuth;
+    DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,101 +50,71 @@ public class SignInUsingEmail extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    }
 
+    }
 
 
     //TODO: intent, check if same, allow user if in database to sign in
-    public void UserSignIn(View view){
+    public void UserSignIn(View view) {
+        String user = editEmail.getText().toString();
+        String pass = editPassword.getText().toString();
+        Log.d("TAG", "Username is: " + user + " Password is: " + pass);
+        validate(user, pass);
+    }
 
-        String email = editEmail.getText().toString();
-        String password = editPassword.getText().toString();
-
-        if (email.equals("")) {
-
-
-            Toast.makeText(getApplicationContext(),
-                    "Please enter your email!",
-                    Toast.LENGTH_LONG).show();
-
+    private void validate(final String userName, String userPassword) {
+        if (userName.equals("") || userPassword.equals("")) {
+            Toast.makeText(this, "Either Username or Password not entered!", Toast.LENGTH_SHORT).show();
+            return;
         }
-
-        else if (password.equals("")) {
-
-
-            Toast.makeText(getApplicationContext(),
-                    "Please enter your password!",
-                    Toast.LENGTH_LONG).show();
-
-        }
-
-        progressDialog.setMessage("Signing In...");
-        progressDialog.show();
-        WasEmailVerified();
-
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
-                this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-
-                        //checks if the task is succesful:
-                        //TODO: must check if the email belongs to user or provider
-                        if(task.isSuccessful()){
-
-                            //if user is trying to sign in with a virified email then start
-                            //next activity
-                            if(userVerifiedEmail == true){
-
-                                //I want to check the database and see if he is user or provider
-                                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                                String user_id = user.getUid();
-
-                                mDatabase.child("Users").child(user_id).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        userType = (String) dataSnapshot.child("User type is: ").getValue();
-                                        //if user is equal to provider then go to map activity
-                                        if(userType.equals("Provider")){
-
-                                            Intent intent = new Intent(getApplicationContext(), CurrentLocationMap.class);
-                                            startActivity(intent);
-
-                                        }
-                                        //if user is not provider, go to request...
-                                        else{
-                                            //start the next activity
-                                            Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
-                                            startActivity(UserProfile);
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-
-
-                            }else {
-                                Toast.makeText(getApplicationContext(),
-                                        "Please verify your email!", Toast.LENGTH_LONG).show();
-                            }
-
-                        }
+        else {
+            firebaseAuth.signInWithEmailAndPassword(userName, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        checkEmailVerification();
+                    } else {
+                        Toast.makeText(SignInUsingEmail.this, "Login Failed", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            });
+        }
     }
+    private void checkEmailVerification(){
+        FirebaseUser firebaseUser = firebaseAuth.getInstance().getCurrentUser();
+        authUserId = firebaseUser.getUid();
+        Boolean emailFlag = firebaseUser.isEmailVerified();
 
-    private void WasEmailVerified(){
+        if(emailFlag){
+            Toast.makeText(SignInUsingEmail.this, "Login Successful", Toast.LENGTH_SHORT).show();
+            finish();
+            mDatabase.child("Users").child(authUserId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    userType = (String) dataSnapshot.child("User type is: ").getValue();
+                    //if user is equal to provider then go to map activity
+                    if(userType.equals("Provider")){
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        Intent intent = new Intent(getApplicationContext(), CurrentLocationMap.class);
+                        startActivity(intent);
 
-        //this checks if the
-        userVerifiedEmail = user.isEmailVerified();
+                    }
+                    //if user is not provider, go to request...
+                    else{
+                        //start the next activity
+                        Intent UserProfile = new Intent(getApplicationContext(), Request_Service.class);
+                        startActivity(UserProfile);
+                    }
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }else{
+            Toast.makeText(this, "Verify your email", Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut();
+        }
     }
-
 }
