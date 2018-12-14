@@ -1,38 +1,31 @@
 package com.example.hammadhanif.cs_477_final_project;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import android.support.v7.widget.Toolbar;
 import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hammadhanif.cs_477_final_project.config.DatabaseHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,42 +39,24 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Request_Service extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    //for the image function
     private static final int CHOOSE_IMAGE = 102;
+    String profileImageUrl;
+    ListView listView;
+    EditText description;
     Uri uriProfileImage;
-
-    EditText addJob, description;
-    TextView name;
+    ArrayAdapter arrayAdapter;
+    ArrayList<String> array_list = new ArrayList<String>();
+    private DrawerLayout drawer;
+    TextView navUsername;
+    ImageView usersImage;
+    ProgressBar progressBar;
     String userNameFirst;
     String userNameLast;
-    ListView listView;
-
-    ImageView usersImage;
-
-    String profileImageUrl;
-
-
-    private DrawerLayout drawer;
-
     FirebaseAuth firebaseAuth;
     DatabaseReference mDatabase;
-    TextView navUsername;
-
-    ProgressBar progressBar;
-    private SQLiteDatabase db = null;
-    private DatabaseHelper dbHelper = null;
-
-    SimpleCursorAdapter myAdapter;
-    Cursor mCursor;
-
-    final String[] all_columns = {dbHelper._ID, dbHelper.ITEM, dbHelper.DESC};
+    TextView name;
 
 
     @Override
@@ -90,69 +65,29 @@ public class Request_Service extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request__service);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        addJob = findViewById(R.id.newjob);
         description = findViewById(R.id.moreInfoEditText);
         listView = findViewById(R.id.listview_services);
 
-        List<String> array_list = new ArrayList<>();
         array_list.add("Washing Machine");
         array_list.add("Air Condition");
         array_list.add("Electrical");
-        //setting the title of the activity
-        this.setTitle("New Services");
-        ListView listView = (ListView) findViewById(R.id.listview_services);
-        final TextView.OnEditorActionListener mReturnListener = new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
-                    String input = v.getText().toString();
+        array_list.add("Child care provider");
+        array_list.add("Machine Fix");
+        array_list.add("Need a Painter");
+        array_list.add("Moving Out/Moving In");
+        array_list.add("Lawn Moving");
+        array_list.add("Carpenter");
+        array_list.add("Sink Blockage");
+        array_list.add("Handyman");
 
-                    Toast.makeText(getApplicationContext(), "Adding " + input, Toast.LENGTH_SHORT).show();
-                    v.setText("");
-                }
-                return true;
-            }
-        };
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = ((TextView) view).getText().toString();
-                Cursor c = myAdapter.getCursor();
-                c.moveToPosition(position);
-                String service = c.getString(0);
-                mCursor = db.query(dbHelper.NAME,all_columns, null, null, null, null,null);
-                myAdapter.swapCursor(mCursor);
-                Toast.makeText(getApplicationContext(), "Selected " + item, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        dbHelper = new DatabaseHelper(this);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                db = dbHelper.getWritableDatabase();
-                String item = ((TextView)view).getText().toString();
-                Cursor c = myAdapter.getCursor();
-                c.moveToPosition(position);
-                String exercise = c.getString(0);
-                db.delete(dbHelper.NAME,"_id=?", new String[]{ exercise});
-                mCursor = db.query(dbHelper.NAME,all_columns,null, null, null, null,null);
-                myAdapter.swapCursor(mCursor);
-
-                return true;
-            }
-        });
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,array_list);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array_list);
         listView.setAdapter(arrayAdapter);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        this.setTitle("New Services");
+        firebaseAuth = FirebaseAuth.getInstance();
 
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         //setting an on click listener for the menu.
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -197,7 +132,6 @@ public class Request_Service extends AppCompatActivity implements NavigationView
 
         navUsername.setText(userNameFirst + " " + userNameLast);
 
-
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -208,7 +142,6 @@ public class Request_Service extends AppCompatActivity implements NavigationView
         toggle.syncState();
 
     }
-
 
 
     @Override
@@ -232,10 +165,10 @@ public class Request_Service extends AppCompatActivity implements NavigationView
                 break;
 
 
-                case R.id.payment:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new PaymentFragment()).commit();
-                    break;
+            case R.id.payment:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PaymentFragment()).commit();
+                break;
 
 
         }
@@ -257,11 +190,9 @@ public class Request_Service extends AppCompatActivity implements NavigationView
 
     }
 
-
     public void onclickPayment(View view) {
         Intent continueIntent = new Intent(this,Paymentactivity.class);
         startActivity(continueIntent);
-
     }
 
     public void CostumerImage(View v){

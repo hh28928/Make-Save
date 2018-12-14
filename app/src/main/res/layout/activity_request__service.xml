@@ -24,28 +24,14 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <EditText
-            android:id="@+id/newjob"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Add a Job"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="25dp"
-            android:textColor="#ffffff"
-            android:background="@drawable/border"
-            android:layout_below="@id/toolbar"/>
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:orientation="vertical"
             android:layout_marginLeft="45dp"
             android:layout_marginRight="45dp"
+            android:layout_marginTop="120dp"
             android:layout_marginBottom="10dp"
-            android:layout_below="@id/newjob"
             android:background="@drawable/rounded_border"
             android:id="@+id/linearLayout">
 
