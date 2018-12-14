@@ -126,25 +126,17 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
                     public boolean onMarkerClick(Marker marker) {
                         String userId = markerHashMap.get(marker.getId());
                         Intent intent = new Intent(CurrentLocationMap.this, Apply.class);
-                        intent.putExtra("Problem",UserInfo.get(userId));
+                        //intent.putExtra("Problem",);
                         startActivity(intent);
 
                         return false;
                     }
                 });
-
-
-
-
             }
-
         }
-
-
     }
     private void getDeviceLocation(){
         Log.d(TAG, "getDeviceLocation: getting the devices current location");
-
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         try{
@@ -157,10 +149,8 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
                         if(task.isSuccessful()){
                             Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
-
                             MoveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     15f);
-
                         }else{
                             Log.d(TAG, "onComplete: current location is null");
                             Toast.makeText(CurrentLocationMap.this, "unable to get current location", Toast.LENGTH_SHORT).show();
@@ -177,7 +167,6 @@ public class CurrentLocationMap extends AppCompatActivity implements OnMapReadyC
         Log.d(TAG, "getLocationPermission: getting location permissions");
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
-
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),

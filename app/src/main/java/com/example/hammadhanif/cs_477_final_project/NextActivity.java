@@ -128,12 +128,10 @@ public class NextActivity extends AppCompatActivity {
                  * we will also attach a listener to check if task is successful.
                  * if the task is successful then start the next activity
                  */
-
                 firebaseAuth.createUserWithEmailAndPassword(userEmail, Pass)
                         .addOnCompleteListener(NextActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-
                                 if (task.isSuccessful()){
                                     progressDialog.hide();
 
@@ -163,7 +161,6 @@ public class NextActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(),
                                                 "Please add the missing information!",
                                                 Toast.LENGTH_LONG).show();
-
                                         fieldsFilled = false;
                                     }
 
@@ -314,7 +311,6 @@ public class NextActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
 }
 
 

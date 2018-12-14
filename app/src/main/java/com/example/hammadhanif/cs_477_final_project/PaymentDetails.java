@@ -78,14 +78,11 @@ public class PaymentDetails extends AppCompatActivity {
 
         String user_id = user.getUid();
 
-//retrieving first name and last name
         mDatabase.child("Users").child(user_id).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
             @Override
             public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
                 location = (String) dataSnapshot.child("Location").getValue();
 
-                Toast.makeText(PaymentDetails.this,
-                        "Location" + location, Toast.LENGTH_LONG).show();
 
             }
             @Override
@@ -120,43 +117,32 @@ public class PaymentDetails extends AppCompatActivity {
                 data_add.clear();
                 for (com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                        Map userType = (HashMap) postSnapshot.child("services").getValue();
-                        if (userType != null) {
-                            if (userType.size() > 0) {
-                                Iterator it = userType.entrySet().iterator();
-                                while (it.hasNext()) {
-                                    Map.Entry pair = (Map.Entry) it.next();
-                                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                                    if (pair.getKey().equals("User Posted a Job")) {
-                                        if (pair.getValue().equals("posted")) {
-                                            data_add.add((String) postSnapshot.child("Location").getValue());
-                                        }
+                    Map userType = (HashMap) postSnapshot.child("services").getValue();
+                    if (userType != null) {
+                        if (userType.size() > 0) {
+                            Iterator it = userType.entrySet().iterator();
+                            while (it.hasNext()) {
+                                Map.Entry pair = (Map.Entry) it.next();
+                                System.out.println(pair.getKey() + " = " + pair.getValue());
+                                if (pair.getKey().equals("User Posted a Job")) {
+                                    if (pair.getValue().equals("posted")) {
+                                        data_add.add((String) postSnapshot.child("Location").getValue());
                                     }
                                 }
                             }
                         }
-                        Toast.makeText(PaymentDetails.this, "number of people:" + data_add.size(), Toast.LENGTH_LONG).show();
-
-
                     }
 
-
+                }
             }
-            }
+    }
 
-            @Override
+                @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
                 });
 
-
-
-//        data_add.clear();
-//        data_add.add("4450 Rivanna River Way");
-//        data_add.add("10457 Presidents Park Drive");
-//        data_add.add("4352 Mason Pond Drive");
-//        data_add.add("Fair Oaks Mall");
         num_jobs_posted = data_add.size()-1;
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.clear();
@@ -180,34 +166,11 @@ public class PaymentDetails extends AppCompatActivity {
                 Address add = list_address.get(0);
                 lat = add.getLatitude();
                 longitude = add.getLongitude();
-               // SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                 editor.putString("lat" +  Integer.toString(i), Double.toString(lat));
                 editor.putString("longitude" +  Integer.toString(i), Double.toString(longitude));
                 editor.apply();
             }
-
         }
-//        String address = data_add.get(0);
-//        Toast.makeText(this, location, Toast.LENGTH_SHORT).show();
-//        Geocoder geo = new Geocoder(PaymentDetails.this);
-//        List<Address> list_address = new ArrayList<>();
-//
-//        try {
-//            list_address = geo.getFromLocationName(address, 1);
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if (list_address.size() > 0) {
-//            Address add = list_address.get(0);
-//            lat = add.getLatitude();
-//            longitude = add.getLongitude();
-//            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-//            editor.clear();
-//            editor.putString("lat", Double.toString(lat));
-//            editor.putString("longitude", Double.toString(longitude));
-//            editor.apply();
-//        }
+        Toast.makeText(getApplicationContext(), "Job Posted Succesfully", Toast.LENGTH_LONG).show();
     }
 }

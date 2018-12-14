@@ -37,8 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProviderActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".RegisterActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".NextActivity"

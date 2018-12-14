@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,6 +49,11 @@ public class QualificationInfoActivity extends AppCompatActivity {
         String userWorkingAt = currentlyWorking.getText().toString();
         String Experience = pastExperience.getText().toString();
         String moreInfo = describeYourself.getText().toString();
+
+        if (userEducation.equals("") || userWorkingAt.equals("") || Experience.equals("") || moreInfo.equals("")) {
+            Toast.makeText(this, "Please add the missing information first!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         //check if there is a user:

@@ -50,11 +50,6 @@ public class PaymentFragment extends Fragment{
         payment_value = (EditText) v.findViewById(R.id.enteramount);
 
 
-//        View v = getView().findViewById(R.id.button_pay);
-//        View v2 = getView().findViewById(R.id.enteramount);
-//
-//        paynow = (Button)v;
-//        payment_value = (EditText)v2;
         Intent intent = new Intent(getActivity(),PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
         getActivity().startService(intent);

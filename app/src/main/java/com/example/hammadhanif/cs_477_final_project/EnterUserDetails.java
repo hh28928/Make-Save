@@ -38,18 +38,11 @@ public class EnterUserDetails extends AppCompatActivity {
     EditText email;
     EditText location;
     EditText phoneNumber;
-
     EditText dateOfBirth;
-
     EditText password;
-
     private ProgressDialog progressDialog;
-
     //Firebase authentication object.
-
     FirebaseAuth firebaseAuth;
-
-
     String fName;
     String lName;
     String Pass;
@@ -58,26 +51,15 @@ public class EnterUserDetails extends AppCompatActivity {
     String userLocation;
     String userPhone;
     Calendar myCalendar;
-
     final String userType = "Costumer";
-
     private FirebaseAuth.AuthStateListener firebaseAuthListner;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_user_details);
-        //awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-        //calander
-
 
         //find the ids that will be saved in the database for now
-
-        //TODO: the address should be saved as well.
-
         register = findViewById(R.id.next_btn);
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.pass);
@@ -89,16 +71,13 @@ public class EnterUserDetails extends AppCompatActivity {
 
         phoneNumber = findViewById(R.id.phone_number);
 
-        /*
+        /**
         since this is an internet operation it will take time
         so we will make a progress bar...
-         */
+         **/
 
         progressDialog = new ProgressDialog(this);
-
-
         firebaseAuth = FirebaseAuth.getInstance();
-
 
         //going to set an onclick listen for the register button.
         register.setOnClickListener(new View.OnClickListener() {
@@ -210,8 +189,6 @@ public class EnterUserDetails extends AppCompatActivity {
                                         DOB = dateOfBirth.getText().toString();
                                         userLocation = location.getText().toString();
                                         userPhone = phoneNumber.getText().toString();
-
-
                                         FirebaseUser user = firebaseAuth.getCurrentUser();
                                         //check if there is a user:
 
@@ -299,14 +276,9 @@ public class EnterUserDetails extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),
                                 "Please verify your email!",
                                 Toast.LENGTH_LONG).show();
-
-                        //FirebaseAuth.s
-
                     }
-
                 }
             });
-
         }
 
     }

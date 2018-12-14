@@ -9,15 +9,18 @@ import android.widget.Toast;
 
 public class Apply extends AppCompatActivity {
     TextView text;
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
+        title = (TextView)findViewById(R.id.title_job);
         text = (TextView) findViewById(R.id.problem);
-        Intent i=getIntent();
-        String prob= i.getStringExtra("Problem");
-        text.setText(prob);
+       // Intent i=getIntent();
+        //String prob= i.getStringExtra("Problem");
+        text.setText("My Dishwasher is leaking");
+        title.setText("Dish Washer");
     }
 
     public void onClickBack(View view) {

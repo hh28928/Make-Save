@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,36 +21,24 @@ public class BankInfoActivity extends AppCompatActivity {
     EditText routingNumber;
     EditText accountNumber;
     EditText confirmAccountNumber;
-
     String userName;
     String userRoutingNumber;
     String userAccountNumber;
     String userConfirmAccountNumber;
-
     FirebaseAuth firebaseAuth;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_info);
-
-
         nameBank = findViewById(R.id.full_name);
         routingNumber = findViewById(R.id.routing_et);
         accountNumber = findViewById(R.id.acc_number1);
         confirmAccountNumber = findViewById(R.id.acc_number2);
-
-
         firebaseAuth = FirebaseAuth.getInstance();
-
-
-
     }
 
     public void SaveAccountInformation(View view) {
-
 
         //saving the fname, lastname and DOB...
         userName = nameBank.getText().toString();
@@ -57,10 +46,13 @@ public class BankInfoActivity extends AppCompatActivity {
         userAccountNumber = accountNumber.getText().toString();
         userConfirmAccountNumber = confirmAccountNumber.getText().toString();
 
-
+        if (userName.equals("") || userRoutingNumber.equals("") || userAccountNumber.equals("") || userConfirmAccountNumber.equals("")) {
+            Toast.makeText(this, "One of the fields are empty!", Toast.LENGTH_LONG).show();
+            return;
+        }
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        //check if there is a user:
 
+        //check if there is a user:
         String user_id = user.getUid();
 
         //create a database reference:
@@ -81,5 +73,4 @@ public class BankInfoActivity extends AppCompatActivity {
         Intent qualificationIntent = new Intent(this, QualificationInfoActivity.class);
         startActivity(qualificationIntent);
     }
-
 }
