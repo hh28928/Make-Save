@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Apply">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="348dp"
+        android:background="@drawable/btn_shaped"
+        android:text="Apply"
+        tools:ignore="MissingConstraints"
+        android:textStyle="bold"
+        android:id="@+id/apply_button"
+        android:onClick="onClickApply"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/back_button"
+        android:text="back"
+        android:onClick="onClickBack"
+        />
+
+    <TextView
+        android:id="@+id/problem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="123"
+        tools:layout_editor_absoluteX="180dp"
+        tools:layout_editor_absoluteY="123dp"
+        tools:ignore="MissingConstraints" />
+
+</android.support.constraint.ConstraintLayout>

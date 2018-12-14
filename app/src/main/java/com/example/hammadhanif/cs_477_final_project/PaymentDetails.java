@@ -25,7 +25,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class PaymentDetails extends AppCompatActivity {
 
@@ -35,8 +38,9 @@ public class PaymentDetails extends AppCompatActivity {
     Button PostJob;
     double lat;
     double longitude;
+    int num_jobs_posted =0;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-    public static ArrayList data_add;
+    ArrayList<String> data_add;
     DatabaseReference mDatabase;
 
     String location;
@@ -49,10 +53,6 @@ public class PaymentDetails extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_details);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         text1 = (TextView) findViewById(R.id.text_idd);
         text22 = (TextView) findViewById(R.id.textamout);
@@ -67,6 +67,33 @@ public class PaymentDetails extends AppCompatActivity {
         {
             e.printStackTrace();
         }
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        String user_id = user.getUid();
+
+//retrieving first name and last name
+        mDatabase.child("Users").child(user_id).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
+                location = (String) dataSnapshot.child("Location").getValue();
+
+                Toast.makeText(PaymentDetails.this,
+                        "Location" + location, Toast.LENGTH_LONG).show();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void showDetails(JSONObject response, String paymentAmount) {
@@ -86,37 +113,101 @@ public class PaymentDetails extends AppCompatActivity {
 
 
     public void onClickPostJob(View view) {
-        String address = "4450 Rivanna River Way";
-        String address2 = "Fair Oaks Mall";
-        //Toast.makeText(this, "4450 Rivanna River Way", Toast.LENGTH_SHORT).show();
-        Geocoder geo = new Geocoder(PaymentDetails.this);
-        List<Address> list_address = new ArrayList<>();
+    mDatabase.child("Users").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+    @Override
+        public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
+            if(dataSnapshot.exists()) {
+                data_add.clear();
+                for (com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-        try {
-            list_address = geo.getFromLocationName(address, 1);
+                        Map userType = (HashMap) postSnapshot.child("services").getValue();
+                        if (userType != null) {
+                            if (userType.size() > 0) {
+                                Iterator it = userType.entrySet().iterator();
+                                while (it.hasNext()) {
+                                    Map.Entry pair = (Map.Entry) it.next();
+                                    System.out.println(pair.getKey() + " = " + pair.getValue());
+                                    if (pair.getKey().equals("User Posted a Job")) {
+                                        if (pair.getValue().equals("posted")) {
+                                            data_add.add((String) postSnapshot.child("Location").getValue());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        Toast.makeText(PaymentDetails.this, "number of people:" + data_add.size(), Toast.LENGTH_LONG).show();
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
+                    }
+
+
+            }
+            }
+
+            @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+                });
+
+
+
+//        data_add.clear();
+//        data_add.add("4450 Rivanna River Way");
+//        data_add.add("10457 Presidents Park Drive");
+//        data_add.add("4352 Mason Pond Drive");
+//        data_add.add("Fair Oaks Mall");
+        num_jobs_posted = data_add.size()-1;
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.clear();
+        editor.putInt("size",data_add.size());
+
+        for(int i=0; i < data_add.size(); i++)
+        {
+            String address = data_add.get(i);
+            Toast.makeText(this, address, Toast.LENGTH_SHORT).show();
+            Geocoder geo = new Geocoder(PaymentDetails.this);
+            List<Address> list_address = new ArrayList<>();
+
+            try {
+                list_address = geo.getFromLocationName(address, 1);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (list_address.size() > 0) {
+                Address add = list_address.get(0);
+                lat = add.getLatitude();
+                longitude = add.getLongitude();
+               // SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor.putString("lat" +  Integer.toString(i), Double.toString(lat));
+                editor.putString("longitude" +  Integer.toString(i), Double.toString(longitude));
+                editor.apply();
+            }
+
         }
-        if (list_address.size() > 0) {
-            Address add = list_address.get(0);
-            lat = add.getLatitude();
-            longitude = add.getLongitude();
-            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-            editor.clear();
-            editor.putString("lat", Double.toString(lat));
-            editor.putString("longitude", Double.toString(longitude));
-            editor.apply();
-//            Intent intent = new Intent(CurrentLocationMap.class).putExtra("lat",lat);
+//        String address = data_add.get(0);
+//        Toast.makeText(this, location, Toast.LENGTH_SHORT).show();
+//        Geocoder geo = new Geocoder(PaymentDetails.this);
+//        List<Address> list_address = new ArrayList<>();
 //
-//            LocalBroadcastManager.getInstance(Activity1.this).sendBroadcast(intent);
-//            Intent intent = new Intent("INTENT_NAME").putExtra(BG_SELECT, hexColor);
-//            LocalBroadcastManager.getInstance(Activity1.this).sendBroadcast(intent);
-//            Intent i = new Intent(this, CurrentLocationMap.class);
-//            i.putExtra("Value1", lat);
-//            i.putExtra("Value2", longitude);
-            //startActivity(i);
-        }
+//        try {
+//            list_address = geo.getFromLocationName(address, 1);
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        if (list_address.size() > 0) {
+//            Address add = list_address.get(0);
+//            lat = add.getLatitude();
+//            longitude = add.getLongitude();
+//            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+//            editor.clear();
+//            editor.putString("lat", Double.toString(lat));
+//            editor.putString("longitude", Double.toString(longitude));
+//            editor.apply();
+//        }
     }
 }
